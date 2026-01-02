@@ -23,7 +23,7 @@ export function Navbar() {
                 <div className="mr-4 flex">
                     <Link href="/" className="mr-6 flex items-center space-x-2">
                         <span className="hidden font-bold sm:inline-block text-xl tracking-tight text-primary">
-                            Jizzle Stream
+                            CloudAnime
                         </span>
                     </Link>
                     <nav className="flex items-center gap-6 text-sm font-medium">

@@ -51,7 +51,7 @@ export default async function Home() {
 
         <div className="relative z-30 flex h-full flex-col justify-end px-4 pb-20 md:px-12 lg:w-1/2">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
-            {featured?.title || featured?.name || "Welcome to Jizzle Stream"}
+            {featured?.title || featured?.name || "Welcome to CloudAnime"}
           </h1>
           <p className="mb-6 line-clamp-3 text-lg text-muted-foreground md:text-xl">
             {featured?.overview || "Discover the best movies and TV shows completely free."}
@@ -59,7 +59,7 @@ export default async function Home() {
           <div className="flex gap-4">
             <Link href={`https://vidsrc.xyz/embed/${featured?.media_type || 'movie'}/${featured?.id}`} target="_blank">
               <Button size="lg" className="gap-2 text-base font-semibold">
-                <Play className="h-5 w-5 fill-current" /> Play Now
+                <Play className="h-5 w-5 fill-current" /> Watch Now
               </Button>
             </Link>
             <Link href={`/${featured?.media_type || 'movie'}/${featured?.id}`}>
@@ -74,10 +74,10 @@ export default async function Home() {
       {/* Rows */}
       <div className="relative z-20 -mt-32 space-y-8 pl-4 md:pl-0">
         <ContinueWatchingRow />
-        <MediaRow title="Trending Movies" items={trendingMovies.results} type="movie" />
-        <MediaRow title="Trending TV Shows" items={trendingTv.results} type="tv" />
-        <MediaRow title="Top Rated Movies" items={topRatedMovies.results} type="movie" />
-        <MediaRow title="Popular Movies" items={popularMovies.results} type="movie" />
+        <MediaRow title="Trending Anime Movies" items={trendingMovies.results} type="movie" />
+        <MediaRow title="Trending Anime Series" items={trendingTv.results} type="tv" />
+        <MediaRow title="Top Rated Anime Movies" items={topRatedMovies.results} type="movie" />
+        <MediaRow title="Popular Anime Movies" items={popularMovies.results} type="movie" />
       </div>
     </div>
   );

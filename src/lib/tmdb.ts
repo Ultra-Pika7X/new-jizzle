@@ -37,32 +37,45 @@ async function fetchTMDB(endpoint: string, params: Record<string, string> = {}) 
 export const tmdb = {
     getTrending: async (type: MediaType, page = 1) => {
         try {
-            // Priority: IMDb Scraper (Free)
-            const results = type === "movie" ? await getPopularIMDb() : await getPopularTVIMDb();
-            if (results && results.length > 0) return { results };
-
-            // Fallback: TMDB (if key exists)
-            if (TMDB_API_KEY) return fetchTMDB(`/trending/${type}/day`, { page: page.toString() });
+            if (TMDB_API_KEY) {
+                return fetchTMDB(`/discover/${type}`, { 
+                    page: page.toString(),
+                    sort_by: "popularity.desc",
+                    with_genres: "16",
+                    with_original_language: "ja"
+                });
+            }
         } catch (e) {
-            console.error("IMDb Fallback to TMDB error:", e);
+            console.error("TMDB error:", e);
         }
         return { results: [] };
     },
 
     getTopRated: async (type: MediaType, page = 1) => {
         try {
-            const results = type === "movie" ? await getPopularIMDb() : await getPopularTVIMDb();
-            if (results && results.length > 0) return { results };
-            if (TMDB_API_KEY) return fetchTMDB(`/${type}/top_rated`, { page: page.toString() });
+            if (TMDB_API_KEY) {
+                return fetchTMDB(`/discover/${type}`, { 
+                    page: page.toString(),
+                    sort_by: "vote_average.desc",
+                    "vote_count.gte": "200",
+                    with_genres: "16",
+                    with_original_language: "ja"
+                });
+            }
         } catch (e) { }
         return { results: [] };
     },
 
     getPopular: async (type: MediaType, page = 1) => {
         try {
-            const results = type === "movie" ? await getPopularIMDb() : await getPopularTVIMDb();
-            if (results && results.length > 0) return { results };
-            if (TMDB_API_KEY) return fetchTMDB(`/${type}/popular`, { page: page.toString() });
+            if (TMDB_API_KEY) {
+                return fetchTMDB(`/discover/${type}`, { 
+                    page: page.toString(),
+                    sort_by: "popularity.desc",
+                    with_genres: "16",
+                    with_original_language: "ja"
+                });
+            }
         } catch (e) { }
         return { results: [] };
     },
