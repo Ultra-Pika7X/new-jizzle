@@ -20,7 +20,12 @@ export async function getPopularIMDb() {
 
         if (!script) {
             console.error("IMDb: __NEXT_DATA__ script not found");
-            return [];
+            return [{
+                id: 'error-script',
+                title: 'Script Not Found',
+                media_type: 'movie',
+                overview: `HTML Length: ${html.length}. Status: ${res.status}`
+            }];
         }
 
         const data = JSON.parse(script);
@@ -39,9 +44,14 @@ export async function getPopularIMDb() {
                 media_type: "movie"
             };
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error("IMDb Scraper Error:", err);
-        return [];
+        return [{
+            id: 'error',
+            title: 'Error Loading Data',
+            media_type: 'movie',
+            overview: `Error: ${err.message}`
+        }];
     }
 }
 
