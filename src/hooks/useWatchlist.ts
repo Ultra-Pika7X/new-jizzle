@@ -42,12 +42,12 @@ export function useWatchlist() {
         saveWatchlist(newList);
     };
 
-    const removeFromWatchlist = (id: number) => {
+    const removeFromWatchlist = (id: number | string) => {
         const newList = watchlist.filter(item => item.id !== id);
         saveWatchlist(newList);
     };
 
-    const isInWatchlist = (id: number) => {
+    const isInWatchlist = (id: number | string) => {
         return watchlist.some(item => item.id === id);
     };
 
