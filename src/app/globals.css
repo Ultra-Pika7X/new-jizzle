@@ -3,55 +3,58 @@
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  
+
   --color-border: var(--border);
   --color-input: var(--input);
-  
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 /* Base Styles */
 :root {
-  /* Stremio 5 Inspired Palette */
-  --background: #0b0b0b; /* Deep Black/Gray */
-  --foreground: #e0e0e0; /* Off-white text */
-  
-  /* Stremio Purple Accent */
-  --primary: #7c4dff; /* Deep Purple */
+  /* pstream.mov Inspired Palette */
+  --background: #000000;
+  /* Pitch Black */
+  --foreground: #ffffff;
+
+  /* Blue Glow Accent */
+  --primary: #3b82f6;
+  /* Blue-500 equivalent */
   --primary-foreground: #ffffff;
-  
-  --secondary: rgba(255, 255, 255, 0.05); /* Subtle surface */
+
+  /* Subtle Surface */
+  --secondary: #111111;
   --secondary-foreground: #ffffff;
-  
-  --muted: #1a1a1a; 
-  --muted-foreground: #9ca3af;
-  
-  --accent: #5e35b1; /* Darker Purple for hover */
+
+  --muted: #262626;
+  --muted-foreground: #a3a3a3;
+
+  --accent: #171717;
   --accent-foreground: #ffffff;
-  
-  --card: #141414; /* Card background */
+
+  --card: #0a0a0a;
   --card-foreground: #ffffff;
-  
-  --border: rgba(255, 255, 255, 0.08); /* Faint border */
-  --input: #202020;
-  
-  --radius: 0.5rem; /* 8px - Stremio uses slightly sharper corners than 16px */
+
+  --border: #333333;
+  --input: #171717;
+
+  --radius: 0.5rem;
 }
 
 body {
@@ -59,11 +62,28 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   antialiased: true;
+  /* Ensure min-height to cover screen */
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Blue Vignette Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: inset 0 0 150px rgba(0, 50, 255, 0.25);
+  opacity: 0.8;
 }
 
 /* Utilities */
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
-  max-width: 90rem; /* Wider container for media grid */
+  max-width: 90rem;
 }

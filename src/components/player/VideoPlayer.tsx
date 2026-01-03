@@ -1,23 +1,29 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, Settings } from "lucide-react";
+import {
+    Play, Pause, Volume2, VolumeX, Maximize, Minimize, Settings,
+    ArrowLeft, RotateCcw, RotateCw, PictureInPicture, Captions
+} from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { useWatchHistory } from "@/hooks/useWatchHistory";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface VideoPlayerProps {
     src?: string;
     poster?: string;
     title?: string;
     backLink?: string;
-    id?: string; // Add ID for history tracking
-    type?: "movie" | "tv"; // Add type for history tracking
+    id?: string;
+    type?: "movie" | "tv";
 }
 
 export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -27,6 +33,7 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
     const [showControls, setShowControls] = useState(true);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
+    const [isPip, setIsPip] = useState(false);
 
     const controlsTimeoutRef = useRef<NodeJS.Timeout>(null);
     const { saveProgress } = useWatchHistory();
@@ -49,14 +56,18 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
 
         video.addEventListener("timeupdate", updateProgress);
         video.addEventListener("loadedmetadata", updateDuration);
+        video.addEventListener("play", () => setIsPlaying(true));
+        video.addEventListener("pause", () => setIsPlaying(false));
 
         return () => {
             video.removeEventListener("timeupdate", updateProgress);
             video.removeEventListener("loadedmetadata", updateDuration);
+            video.removeEventListener("play", () => setIsPlaying(true));
+            video.removeEventListener("pause", () => setIsPlaying(false));
         };
     }, []);
 
-    // Save progress periodically and on pause
+    // Save progress
     useEffect(() => {
         if (!id || !type) return;
 
@@ -68,7 +79,7 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
                         title: title || "Unknown Title",
                         poster_path: poster?.replace("https://image.tmdb.org/t/p/original", "") || "",
                         media_type: type
-                    } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+                    } as any,
                     (videoRef.current.currentTime / videoRef.current.duration) * 100,
                     videoRef.current.currentTime,
                     videoRef.current.duration
@@ -82,18 +93,23 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
 
         return () => {
             clearInterval(interval);
-            save(); // Save on unmount
+            save();
         };
     }, [isPlaying, id, type, title, poster, saveProgress]);
 
     const togglePlay = () => {
         if (videoRef.current) {
-            if (isPlaying) {
-                videoRef.current.pause();
-            } else {
+            if (videoRef.current.paused) {
                 videoRef.current.play();
+            } else {
+                videoRef.current.pause();
             }
-            setIsPlaying(!isPlaying);
+        }
+    };
+
+    const skip = (seconds: number) => {
+        if (videoRef.current) {
+            videoRef.current.currentTime += seconds;
         }
     };
 
@@ -121,13 +137,24 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
 
     const toggleFullscreen = () => {
         if (!containerRef.current) return;
-
         if (!document.fullscreenElement) {
             containerRef.current.requestFullscreen();
             setIsFullscreen(true);
         } else {
             document.exitFullscreen();
             setIsFullscreen(false);
+        }
+    };
+
+    const togglePip = async () => {
+        if (videoRef.current) {
+            if (document.pictureInPictureElement) {
+                await document.exitPictureInPicture();
+                setIsPip(false);
+            } else {
+                await videoRef.current.requestPictureInPicture();
+                setIsPip(true);
+            }
         }
     };
 
@@ -153,10 +180,23 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
         return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
     };
 
+    const [showSettings, setShowSettings] = useState(false);
+    const [playbackSpeed, setPlaybackSpeed] = useState(1);
+
+    const toggleSettings = () => setShowSettings(!showSettings);
+
+    const changeSpeed = (speed: number) => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = speed;
+            setPlaybackSpeed(speed);
+            setShowSettings(false);
+        }
+    };
+
     return (
         <div
             ref={containerRef}
-            className="group relative aspect-video w-full overflow-hidden bg-black shadow-2xl rounded-xl"
+            className="group relative h-screen w-full overflow-hidden bg-black font-sans"
             onMouseMove={handleMouseMove}
             onMouseLeave={() => isPlaying && setShowControls(false)}
         >
@@ -166,30 +206,68 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
                 poster={poster}
                 className="h-full w-full object-contain"
                 onClick={togglePlay}
+                playsInline
             />
 
-            {/* Overlay Gradient */}
+            {/* Top Bar: Back & Title */}
             <div className={cn(
-                "absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 transition-opacity duration-300 pointer-events-none",
-                showControls ? "opacity-100" : "opacity-0"
-            )} />
+                "absolute top-0 left-0 right-0 p-6 flex items-center gap-4 transition-all duration-300 z-50 bg-gradient-to-b from-black/80 to-transparent",
+                showControls ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-white hover:bg-white/10 rounded-full"
+                    onClick={() => router.back()}
+                >
+                    <ArrowLeft className="h-6 w-6" />
+                </Button>
+                <div>
+                    <h2 className="text-lg font-medium text-white/90 drop-shadow-md">{title}</h2>
+                    <p className="text-sm text-white/50">Back to home</p>
+                </div>
+            </div>
 
-            {/* Centered Play Button (Visible on Pause or initial load) */}
-            {!isPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="rounded-full bg-white/10 p-4 backdrop-blur-sm transition-transform hover:scale-110">
-                        <Play className="h-12 w-12 fill-white text-white" />
+            {/* Settings Overlay */}
+            {showSettings && (
+                <div className="absolute bottom-24 right-6 w-64 bg-black/90 border border-white/10 rounded-xl overflow-hidden backdrop-blur-md z-[60] animate-in fade-in slide-in-from-bottom-5">
+                    <div className="p-3 border-b border-white/10">
+                        <h3 className="text-sm font-semibold text-white">Playback Settings</h3>
+                    </div>
+                    <div className="p-2 space-y-1">
+                        <div className="px-2 py-1 text-xs text-gray-400 uppercase tracking-wider">Speed</div>
+                        <div className="grid grid-cols-3 gap-1">
+                            {[0.5, 1, 1.25, 1.5, 2].map((speed) => (
+                                <button
+                                    key={speed}
+                                    onClick={() => changeSpeed(speed)}
+                                    className={cn(
+                                        "px-2 py-1.5 text-sm rounded-md transition-colors",
+                                        playbackSpeed === speed ? "bg-white text-black font-medium" : "text-gray-300 hover:bg-white/10"
+                                    )}
+                                >
+                                    {speed}x
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="p-2 space-y-1 border-t border-white/10">
+                        <div className="px-2 py-1 text-xs text-gray-400 uppercase tracking-wider">Quality</div>
+                        <button className="w-full text-left px-3 py-2 text-sm text-white bg-white/5 rounded-md flex justify-between items-center cursor-default">
+                            <span>Auto (1080p)</span>
+                            <span className="text-xs text-green-400">HD</span>
+                        </button>
                     </div>
                 </div>
             )}
 
-            {/* Controls Bar */}
+            {/* Bottom Controls Container */}
             <div className={cn(
-                "absolute bottom-0 left-0 right-0 flex flex-col gap-2 p-4 transition-all duration-300",
-                showControls ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
+                "absolute bottom-0 left-0 right-0 px-6 pb-6 pt-24 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-300 z-50",
+                showControls ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0 pointer-events-none"
             )}>
-                {/* Progress Bar */}
-                <div className="group/slider relative flex h-2 w-full cursor-pointer items-center">
+                {/* Progress Bar (Above Controls) */}
+                <div className="relative flex h-1.5 w-full cursor-pointer items-center group/slider mb-4">
                     <input
                         type="range"
                         min="0"
@@ -198,30 +276,43 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
                         onChange={handleSeek}
                         className="absolute z-20 h-full w-full opacity-0 cursor-pointer"
                     />
-                    <div className="absolute z-10 h-1 w-full rounded-full bg-white/20 overflow-hidden">
-                        <div
-                            className="h-full bg-primary transition-all duration-100 group-hover/slider:h-1.5"
-                            style={{ width: `${progress}%` }}
-                        />
-                    </div>
-                    {/* Scrubber Knob */}
+                    {/* Background Track */}
+                    <div className="absolute top-0 left-0 h-full w-full rounded-full bg-white/20" />
+                    {/* Buffered (Optional placeholder) */}
+
+                    {/* Filled Track */}
                     <div
-                        className="absolute z-20 h-3 w-3 rounded-full bg-white shadow opacity-0 transition-opacity group-hover/slider:opacity-100"
-                        style={{ left: `${progress}%`, transform: 'translateX(-50%)' }}
+                        className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all"
+                        style={{ width: `${progress}%` }}
+                    />
+                    {/* Thumb / Knob */}
+                    <div
+                        className="absolute top-1/2 -mt-2 h-4 w-4 rounded-full bg-white shadow-lg opacity-0 group-hover/slider:opacity-100 transition-opacity"
+                        style={{ left: `${progress}%`, transform: 'translateX(-50%) translateY(-50%)' }}
                     />
                 </div>
 
-                <div className="flex items-center justify-between mt-2">
+                {/* Buttons Row */}
+                <div className="flex items-center justify-between">
+                    {/* Left Group */}
                     <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="icon" onClick={togglePlay} className="text-white hover:bg-white/10">
-                            {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Play className="h-5 w-5 fill-current" />}
+                        <Button variant="ghost" size="icon" onClick={togglePlay} className="text-white hover:bg-white/10 h-10 w-10">
+                            {isPlaying ? <Pause className="h-6 w-6 fill-current" /> : <Play className="h-6 w-6 fill-current" />}
                         </Button>
 
-                        <div className="flex items-center gap-2 group/vol">
+                        <Button variant="ghost" size="icon" onClick={() => skip(-10)} className="text-white/80 hover:bg-white/10 hover:text-white">
+                            <RotateCcw className="h-5 w-5" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => skip(10)} className="text-white/80 hover:bg-white/10 hover:text-white">
+                            <RotateCw className="h-5 w-5" />
+                        </Button>
+
+                        {/* Volume */}
+                        <div className="flex items-center gap-2 group/vol relative">
                             <Button variant="ghost" size="icon" onClick={toggleMute} className="text-white hover:bg-white/10">
                                 {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
                             </Button>
-                            <div className="w-0 overflow-hidden transition-all duration-300 group-hover/vol:w-24">
+                            <div className="w-0 overflow-hidden transition-all duration-300 group-hover/vol:w-24 flex items-center">
                                 <input
                                     type="range"
                                     min="0"
@@ -229,25 +320,30 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
                                     step="0.05"
                                     value={isMuted ? 0 : volume}
                                     onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                                    className="h-1 w-20 rounded-lg bg-gray-600 accent-primary cursor-pointer"
+                                    className="h-1 w-20 rounded-lg accent-white bg-white/30 cursor-pointer"
                                 />
                             </div>
                         </div>
 
-                        <div className="text-xs font-medium text-white/90">
+                        {/* Time */}
+                        <div className="text-sm font-medium text-white/90 font-mono tracking-wider ml-2">
                             {formatTime(currentTime)} / {formatTime(duration || 0)}
                         </div>
                     </div>
 
+                    {/* Right Group */}
                     <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-medium text-white truncate max-w-[200px] hidden sm:block">
-                            {title}
-                        </h3>
-                        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+                        <Button variant="ghost" size="icon" onClick={togglePip} className="text-white/80 hover:bg-white/10 hover:text-white">
+                            <PictureInPicture className="h-5 w-5" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="text-white/80 hover:bg-white/10 hover:text-white">
+                            <Captions className="h-5 w-5" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={toggleSettings} className={cn("transition-colors", showSettings ? "text-white bg-white/10" : "text-white/80 hover:bg-white/10 hover:text-white")}>
                             <Settings className="h-5 w-5" />
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="text-white hover:bg-white/10">
-                            {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
+                        <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="text-white hover:bg-white/10 h-10 w-10">
+                            {isFullscreen ? <Minimize className="h-6 w-6" /> : <Maximize className="h-6 w-6" />}
                         </Button>
                     </div>
                 </div>
