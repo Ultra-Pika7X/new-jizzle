@@ -1,0 +1,19 @@
+﻿
+> cloud-anime@0.1.0 lint
+> eslint
+
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\components\common\MediaRow.tsx
+  8:10  warning  'cn' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\lib\jikan.ts
+  1:10  warning  'MediaRow' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\lib\tmdb.ts
+  10:42  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  20:42  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  30:41  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  46:35  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 6 problems (0 errors, 6 warnings)
+

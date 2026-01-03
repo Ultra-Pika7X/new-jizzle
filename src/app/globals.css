@@ -28,30 +28,30 @@
 
 /* Base Styles */
 :root {
-  /* Seanime-inspired palette */
-  --background: #000000; /* Pure Black */
-  --foreground: #ffffff; /* Pure White */
+  /* Stremio 5 Inspired Palette */
+  --background: #0b0b0b; /* Deep Black/Gray */
+  --foreground: #e0e0e0; /* Off-white text */
   
-  /* Electric Blue Accent */
-  --primary: #3b82f6; /* Blue 500 - Adjust to a vivid electric blue if needed */
+  /* Stremio Purple Accent */
+  --primary: #7c4dff; /* Deep Purple */
   --primary-foreground: #ffffff;
   
-  --secondary: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
+  --secondary: rgba(255, 255, 255, 0.05); /* Subtle surface */
   --secondary-foreground: #ffffff;
   
-  --muted: #0a0a0a; /* Very dark gray, almost black */
-  --muted-foreground: #a3a3a3; /* Neutral 400 */
+  --muted: #1a1a1a; 
+  --muted-foreground: #9ca3af;
   
-  --accent: rgba(59, 130, 246, 0.2); /* Blue tint for hover */
+  --accent: #5e35b1; /* Darker Purple for hover */
   --accent-foreground: #ffffff;
   
-  --card: rgba(20, 20, 20, 0.8); /* Semi-transparent dark card */
+  --card: #141414; /* Card background */
   --card-foreground: #ffffff;
   
-  --border: rgba(255, 255, 255, 0.1); /* Subtle white border */
-  --input: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.08); /* Faint border */
+  --input: #202020;
   
-  --radius: 1rem; /* 16px - Larger rounded corners */
+  --radius: 0.5rem; /* 8px - Stremio uses slightly sharper corners than 16px */
 }
 
 body {
@@ -65,5 +65,5 @@ body {
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
-  max-width: 80rem; /* 1280px */
+  max-width: 90rem; /* Wider container for media grid */
 }

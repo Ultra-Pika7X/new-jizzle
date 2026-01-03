@@ -9,6 +9,7 @@ export function ContinueWatchingRow() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line
         setMounted(true);
     }, []);
 

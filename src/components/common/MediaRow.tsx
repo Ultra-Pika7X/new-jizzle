@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MediaCard } from "./MediaCard";
 import { MediaItem } from "@/types";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
+// cn removed
 
 interface MediaRowProps {
     title: string;
@@ -56,7 +56,7 @@ export function MediaRow({ title, items, type }: MediaRowProps) {
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                     {items.map((item) => (
-                        <div key={item.id} className="w-[150px] flex-none md:w-[200px]">
+                        <div key={item.id} className="w-32 flex-none md:w-48 transition-all duration-300">
                             <MediaCard item={item} type={type || item.media_type as "movie" | "tv"} />
                         </div>
                     ))}

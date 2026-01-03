@@ -12,6 +12,11 @@ interface PageProps {
 export default async function MoviePage({ params }: PageProps) {
     const { id } = await params;
     const movie = await tmdb.getDetails("movie", id);
+
+    if (!movie) {
+        return <div className="p-20 text-center text-white">Movie not found</div>;
+    }
+
     const recommendations = movie.recommendations?.results || [];
 
     const backdropUrl = movie.backdrop_path
@@ -25,7 +30,7 @@ export default async function MoviePage({ params }: PageProps) {
     return (
         <div className="min-h-screen pb-20">
             {/* Hero / Backdrop */}
-            <div className="relative h-[70vh] w-full overflow-hidden">
+            <div className="relative min-h-[70vh] w-full overflow-hidden flex items-end">
                 {backdropUrl && (
                     <div
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
@@ -36,7 +41,7 @@ export default async function MoviePage({ params }: PageProps) {
                     </div>
                 )}
 
-                <div className="container relative z-10 flex h-full flex-col justify-end pb-12 pt-20">
+                <div className="container relative z-10 flex h-full flex-col justify-end pb-12 pt-32 md:pt-20">
                     <div className="flex flex-col gap-8 md:flex-row md:items-end">
                         {/* Poster (Hidden on mobile, visible on desktop) */}
                         <div className="hidden md:block relative h-80 w-52 overflow-hidden rounded-lg shadow-2xl shrink-0">

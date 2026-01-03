@@ -1,0 +1,30 @@
+﻿
+> cloud-anime@0.1.0 lint
+> eslint
+
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\components\common\MediaRow.tsx
+  8:10  warning  'cn' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\components\player\VideoPlayer.tsx
+  71:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\hooks\useAnimeStream.ts
+  35:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\lib\imdb.ts
+  34:33  error    Unexpected any. Specify a different type                                                               @typescript-eslint/no-explicit-any
+  34:43  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\lib\jikan.ts
+  1:10  warning  'MediaRow' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\armor\OneDrive\Documents\Apps\new-jizzle\src\lib\tmdb.ts
+  10:42  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  20:42  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  30:41  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  46:35  warning  'page' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 10 problems (3 errors, 7 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+

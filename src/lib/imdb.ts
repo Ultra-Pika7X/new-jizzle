@@ -31,7 +31,7 @@ export async function getPopularIMDb() {
         const data = JSON.parse(script);
         const edges = data.props?.pageProps?.pageData?.chartTitles?.edges || [];
 
-        return edges.map((edge: any) => {
+        return edges.map((edge: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
             const node = edge.node;
             return {
                 id: node.id,
@@ -44,7 +44,7 @@ export async function getPopularIMDb() {
                 media_type: "movie"
             };
         });
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
         console.error("IMDb Scraper Error:", err);
         return [{
             id: 'error',
@@ -76,7 +76,7 @@ export async function getPopularTVIMDb() {
         const data = JSON.parse(script);
         const edges = data.props?.pageProps?.pageData?.chartTitles?.edges || [];
 
-        return edges.map((edge: any) => {
+        return edges.map((edge: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
             const node = edge.node;
             return {
                 id: node.id,
@@ -102,7 +102,7 @@ export async function searchIMDb(query: string) {
 
         if (!data.ok) return [];
 
-        return (data.description || []).map((item: any) => ({
+        return (data.description || []).map((item: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
             id: item["#IMDB_ID"],
             title: item["#TITLE"],
             poster_path: item["#IMG_POSTER"],
@@ -139,7 +139,9 @@ export async function getIMDbDetails(id: string) {
             release_date: s.datePublished,
             genres: s.genre?.map((g: string) => ({ name: g })),
             runtime: s.duration ? parseInt(s.duration.replace("PT", "").replace("M", "")) : 0,
-            recommendations: { results: [] }
+            recommendations: { results: [] },
+            original_language: s.inLanguage ? (Array.isArray(s.inLanguage) ? s.inLanguage[0]?.name : s.inLanguage?.name) || "en" : "en",
+            origin_country: s.countryOfOrigin ? (Array.isArray(s.countryOfOrigin) ? s.countryOfOrigin.map((c: any) => c.name) : [s.countryOfOrigin.name]) : []
         };
     } catch (err) {
         console.error("IMDb Detail Error:", err);

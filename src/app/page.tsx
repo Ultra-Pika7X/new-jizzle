@@ -2,13 +2,17 @@ import { MediaRow } from "@/components/common/MediaRow";
 import { ContinueWatchingRow } from "@/components/common/ContinueWatchingRow";
 import { tmdb } from "@/lib/tmdb";
 import { Button } from "@/components/ui/Button";
-import { Play, Info } from "lucide-react";
+import { Play, Info, Star } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let trendingMovies: any = { results: [] };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let trendingTv: any = { results: [] };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let topRatedMovies: any = { results: [] };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let popularMovies: any = { results: [] };
 
   try {
@@ -33,40 +37,62 @@ export default async function Home() {
   return (
     <div className="relative min-h-screen pb-20" suppressHydrationWarning>
       {/* Hero Section */}
-      <div className="relative h-[85vh] w-full overflow-hidden">
+      <div className="relative h-[80vh] w-full overflow-hidden">
         <div className="absolute inset-0 z-0">
           {featured ? (
             <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000"
               style={{ backgroundImage: `url(${featured.backdrop_path?.startsWith("http") ? featured.backdrop_path : `https://image.tmdb.org/t/p/original${featured.backdrop_path}`})` }}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/20 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
+              {/* Vignette effect */}
+              <div className="absolute inset-0 bg-black/20" />
             </div>
           ) : (
-            <div className="absolute inset-0 bg-muted" />
+            <div className="absolute inset-0 bg-muted animate-pulse" />
           )}
         </div>
 
-        <div className="relative z-30 flex h-full flex-col justify-end px-4 pb-20 md:px-12 lg:w-1/2">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
-            {featured?.title || featured?.name || "Welcome to CloudAnime"}
-          </h1>
-          <p className="mb-6 line-clamp-3 text-lg text-muted-foreground md:text-xl">
-            {featured?.overview || "Discover the best movies and TV shows completely free."}
-          </p>
-          <div className="flex gap-4">
-            <Link href={`https://vidsrc.xyz/embed/${featured?.media_type || 'movie'}/${featured?.id}`} target="_blank">
-              <Button size="lg" className="gap-2 text-base font-semibold">
-                <Play className="h-5 w-5 fill-current" /> Watch Now
-              </Button>
-            </Link>
-            <Link href={`/${featured?.media_type || 'movie'}/${featured?.id}`}>
-              <Button size="lg" variant="outline" className="gap-2 text-base font-semibold">
-                <Info className="h-5 w-5" /> More Info
-              </Button>
-            </Link>
+        <div className="relative z-30 flex h-full flex-col justify-end px-6 pb-24 md:px-16 lg:w-2/3">
+          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-10 duration-700">
+            <h1 className="text-5xl font-black tracking-tight text-white drop-shadow-2xl md:text-7xl lg:text-8xl">
+              {featured?.title || featured?.name || "Welcome to CloudAnime"}
+            </h1>
+
+            <div className="flex items-center gap-3 text-sm font-medium text-white/90">
+              {featured?.vote_average && (
+                <span className="flex items-center gap-1 text-yellow-400 bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10">
+                  <Star className="h-3.5 w-3.5 fill-current" />
+                  {featured.vote_average.toFixed(1)}
+                </span>
+              )}
+              <span className="bg-primary/80 px-2 py-1 rounded text-white backdrop-blur-md">
+                {featured?.media_type === 'tv' ? 'SERIES' : 'MOVIE'}
+              </span>
+              {featured?.first_air_date && (
+                <span className="px-2 py-1 border border-white/20 rounded backdrop-blur-md">
+                  {new Date(featured.first_air_date).getFullYear()}
+                </span>
+              )}
+            </div>
+
+            <p className="line-clamp-3 text-lg text-gray-200 md:text-xl max-w-2xl drop-shadow-md leading-relaxed">
+              {featured?.overview || "Discover the best movies and TV shows completely free."}
+            </p>
+
+            <div className="flex gap-4 pt-4">
+              <Link href={`/watch/${featured?.media_type || 'movie'}/${featured?.id}`}>
+                <Button size="lg" className="h-14 px-8 gap-3 text-lg font-bold bg-white text-black hover:bg-gray-200 transition-transform hover:scale-105 rounded-lg">
+                  <Play className="h-6 w-6 fill-current" /> Watch Now
+                </Button>
+              </Link>
+              <Link href={`/${featured?.media_type || 'movie'}/${featured?.id}`}>
+                <Button size="lg" variant="outline" className="h-14 px-8 gap-3 text-lg font-bold border-white/20 bg-black/40 text-white hover:bg-white/10 backdrop-blur-md transition-transform hover:scale-105 rounded-lg">
+                  <Info className="h-6 w-6" /> More Info
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

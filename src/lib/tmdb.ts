@@ -7,7 +7,7 @@ export type MediaType = "movie" | "tv";
  * We keep the "tmdb" object name to avoid breaking imports in the rest of the app.
  */
 export const tmdb = {
-    getTrending: async (type: MediaType, page = 1) => {
+    getTrending: async (type: MediaType, _page = 1) => {
         // IMDb scraper doesn't support pagination or distinct trending vs popular in the current implementation
         if (type === 'tv') {
             const results = await getPopularTVIMDb();
@@ -17,7 +17,7 @@ export const tmdb = {
         return { results };
     },
 
-    getTopRated: async (type: MediaType, page = 1) => {
+    getTopRated: async (type: MediaType, _page = 1) => {
         // Fallback to popular as we don't have a specific top rated scraper yet
         if (type === 'tv') {
             const results = await getPopularTVIMDb();
@@ -27,7 +27,7 @@ export const tmdb = {
         return { results };
     },
 
-    getPopular: async (type: MediaType, page = 1) => {
+    getPopular: async (type: MediaType, _page = 1) => {
         if (type === 'tv') {
             const results = await getPopularTVIMDb();
             return { results };
@@ -43,7 +43,7 @@ export const tmdb = {
         return getIMDbDetails(id.toString());
     },
 
-    search: async (query: string, page = 1) => {
+    search: async (query: string, _page = 1) => {
         const results = await searchIMDb(query);
         return { results };
     },

@@ -20,35 +20,45 @@ export function MediaCard({ item, className, type }: MediaCardProps) {
     return (
         <Link
             href={href}
-            className={cn("group relative flex flex-col gap-2 transition-transform hover:scale-105", className)}
+            className={cn(
+                "group relative flex aspect-[2/3] w-full flex-col overflow-hidden rounded-md bg-card transition-all hover:ring-2 hover:ring-primary hover:z-10",
+                className
+            )}
         >
-            <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-muted shadow-lg">
-                {item.poster_path ? (
-                    <Image
-                        src={item.poster_path.startsWith("http") ? item.poster_path : `https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                        alt={title}
-                        fill
-                        className="object-cover transition-opacity duration-300 group-hover:opacity-80"
-                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-                    />
-                ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-secondary text-muted-foreground">
-                        No Image
-                    </div>
-                )}
-                <div className="absolute top-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-xs font-bold text-yellow-400 backdrop-blur-sm flex items-center gap-1">
-                    <Star className="h-3 w-3 fill-current" />
-                    {item.vote_average ? item.vote_average.toFixed(1) : "N/A"}
+            {item.poster_path ? (
+                <Image
+                    src={item.poster_path.startsWith("http") ? item.poster_path : `https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                    alt={title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+                />
+            ) : (
+                <div className="flex h-full w-full items-center justify-center bg-secondary text-muted-foreground">
+                    No Image
                 </div>
-            </div>
-            <div className="flex flex-col gap-1 px-1">
-                <h3 className="truncate text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+            )}
+
+            {/* Gradient Overlay for Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 transition-opacity group-hover:opacity-80" />
+
+            {/* Content Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-3 flex flex-col justify-end h-full">
+                <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="flex items-center gap-1 text-[10px] font-bold text-yellow-400 bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm">
+                            <Star className="h-3 w-3 fill-current" />
+                            {item.vote_average ? item.vote_average.toFixed(1) : "N/A"}
+                        </span>
+                        <span className="text-[10px] font-medium text-white/80 bg-black/50 px-1.5 py-0.5 rounded backdrop-blur-sm">
+                            {year}
+                        </span>
+                    </div>
+                </div>
+
+                <h3 className="line-clamp-2 text-sm font-semibold text-white leading-tight drop-shadow-md group-hover:text-primary transition-colors">
                     {title}
                 </h3>
-                <p className="text-xs text-muted-foreground flex justify-between">
-                    <span>{year}</span>
-                    <span className="uppercase border border-border px-1 rounded-[2px] text-[10px]">{mediaType}</span>
-                </p>
             </div>
         </Link>
     );

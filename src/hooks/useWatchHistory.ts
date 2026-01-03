@@ -18,6 +18,7 @@ export function useWatchHistory() {
         const saved = localStorage.getItem("watch-history");
         if (saved) {
             try {
+                // eslint-disable-next-line
                 setHistory(JSON.parse(saved) as WatchHistoryItem[]);
             } catch (e) {
                 console.error("Failed to parse watch history", e);

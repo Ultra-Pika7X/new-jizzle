@@ -12,6 +12,11 @@ interface PageProps {
 export default async function TvPage({ params }: PageProps) {
     const { id } = await params;
     const show = await tmdb.getDetails("tv", id);
+
+    if (!show) {
+        return <div className="p-20 text-center text-white">TV Show not found</div>;
+    }
+
     const recommendations = show.recommendations?.results || [];
 
     const backdropUrl = show.backdrop_path
@@ -25,7 +30,7 @@ export default async function TvPage({ params }: PageProps) {
     return (
         <div className="min-h-screen pb-20">
             {/* Hero / Backdrop */}
-            <div className="relative h-[70vh] w-full overflow-hidden">
+            <div className="relative min-h-[70vh] w-full overflow-hidden flex items-end">
                 {backdropUrl && (
                     <div
                         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
@@ -36,7 +41,7 @@ export default async function TvPage({ params }: PageProps) {
                     </div>
                 )}
 
-                <div className="container relative z-10 flex h-full flex-col justify-end pb-12 pt-20">
+                <div className="container relative z-10 flex h-full flex-col justify-end pb-12 pt-32 md:pt-20">
                     <div className="flex flex-col gap-8 md:flex-row md:items-end">
                         {/* Poster */}
                         <div className="hidden md:block relative h-80 w-52 overflow-hidden rounded-lg shadow-2xl shrink-0">
@@ -57,10 +62,10 @@ export default async function TvPage({ params }: PageProps) {
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <Calendar className="h-4 w-4" />
-                                    <span>{show.first_air_date?.split("-")[0]}</span>
+                                    <span>{(show.release_date || "").split("-")[0]}</span>
                                 </div>
                                 <div>
-                                    {show.number_of_seasons} Seasons • {show.number_of_episodes} Episodes
+                                    {/* {show.number_of_seasons} Seasons • {show.number_of_episodes} Episodes */}
                                 </div>
                             </div>
 

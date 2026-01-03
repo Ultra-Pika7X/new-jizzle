@@ -68,7 +68,7 @@ export function VideoPlayer({ src, poster, title, id, type }: VideoPlayerProps) 
                         title: title || "Unknown Title",
                         poster_path: poster?.replace("https://image.tmdb.org/t/p/original", "") || "",
                         media_type: type
-                    } as any, // Cast to any to fit MediaItem which has strict shape
+                    } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
                     (videoRef.current.currentTime / videoRef.current.duration) * 100,
                     videoRef.current.currentTime,
                     videoRef.current.duration

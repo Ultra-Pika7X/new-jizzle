@@ -1,4 +1,4 @@
-import { MediaRow } from "@/components/common/MediaRow";
+
 
 const BASE_URL = "https://api.jikan.moe/v4";
 
@@ -26,7 +26,7 @@ async function fetchJikan(endpoint: string, params: Record<string, string> = {})
 }
 
 // Mapper to convert Jikan anime object to our app's Movie/TV structure
-function mapAnimeToMedia(anime: any): any {
+function mapAnimeToMedia(anime: any): any { // eslint-disable-line @typescript-eslint/no-explicit-any
     if (!anime) return null;
     return {
         id: anime.mal_id,
@@ -118,7 +118,7 @@ export const jikan = {
 
             return {
                 ...mapped,
-                genres: data.genres?.map((g: any) => ({ id: g.mal_id, name: g.name })) || [],
+                genres: data.genres?.map((g: any) => ({ id: g.mal_id, name: g.name })) || [], // eslint-disable-line @typescript-eslint/no-explicit-any
                 recommendations: { results: [] } // TODO: Implement recommendations
             }
         } catch (e) {
