@@ -5,6 +5,7 @@ export interface Stream {
     isM3U8: boolean;
     subtitles?: Subtitle[];
     headers?: Record<string, string>;
+    source?: string;
 }
 
 export interface Subtitle {

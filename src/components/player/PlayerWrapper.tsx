@@ -3,8 +3,7 @@
 import dynamic from "next/dynamic";
 import type { SkipTimes } from "@/lib/aniskip";
 
-// Dynamic import with ssr: false is allowed here because this is a Client Component ('use client')
-const CustomPlayer = dynamic(() => import("./CustomPlayer").then(mod => mod.CustomPlayer), {
+const VideoPlayer = dynamic(() => import("./VideoPlayer").then(mod => mod.VideoPlayer), {
     ssr: false,
     loading: () => <div className="w-full aspect-video bg-black flex items-center justify-center text-white/50">Loading Player...</div>
 });
@@ -17,5 +16,5 @@ interface PlayerWrapperProps {
 }
 
 export function PlayerWrapper(props: PlayerWrapperProps) {
-    return <CustomPlayer {...props} />;
+    return <VideoPlayer {...props} />;
 }

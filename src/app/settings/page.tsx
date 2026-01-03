@@ -5,9 +5,12 @@ import { ArrowLeft, Monitor, Play, Shield, Info, Moon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import Image from "next/image";
 
 export default function SettingsPage() {
     const { settings, updateSetting, isLoaded } = useSettings();
+    const { user } = useAuth();
 
     if (!isLoaded) return <div className="min-h-screen bg-black" />;
 
@@ -24,20 +27,45 @@ export default function SettingsPage() {
                     <h1 className="text-3xl font-bold">Settings</h1>
                 </div>
 
-                {/* Account Section (Mock) */}
+                {/* Account Section */}
                 <section className="space-y-4">
                     <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Account</h2>
                     <div className="rounded-xl border border-white/10 bg-[#111] p-6">
-                        <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600" />
-                            <div>
-                                <h3 className="font-semibold text-lg">Guest User</h3>
-                                <p className="text-sm text-gray-400">Sync is disabled</p>
+                        {user ? (
+                            <div className="flex items-center gap-4">
+                                <div className="h-12 w-12 rounded-full overflow-hidden border border-white/20">
+                                    {user.photoURL ? (
+                                        <Image src={user.photoURL} alt="Profile" width={48} height={48} className="object-cover h-full w-full" />
+                                    ) : (
+                                        <div className="h-full w-full bg-zinc-800 flex items-center justify-center">
+                                            <div className="text-white text-xl">{(user.displayName || "U")[0].toUpperCase()}</div>
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold text-lg">{user.displayName || "User"}</h3>
+                                    <p className="text-sm text-gray-400">{user.email}</p>
+                                </div>
+                                <Link href="/profile" className="ml-auto">
+                                    <Button className="bg-white/10 hover:bg-white/20 text-white">
+                                        Manage
+                                    </Button>
+                                </Link>
                             </div>
-                            <Button className="ml-auto bg-white/10 hover:bg-white/20 text-white">
-                                Sign In
-                            </Button>
-                        </div>
+                        ) : (
+                            <div className="flex items-center gap-4">
+                                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-gray-700 to-gray-900" />
+                                <div>
+                                    <h3 className="font-semibold text-lg">Guest User</h3>
+                                    <p className="text-sm text-gray-400">Sign in to sync your progress</p>
+                                </div>
+                                <Link href="/login" className="ml-auto">
+                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                                        Sign In
+                                    </Button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </section>
 

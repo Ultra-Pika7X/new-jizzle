@@ -5,6 +5,12 @@ import { Search } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
+  const hour = new Date().getHours();
+  let greeting = "Tonight";
+  if (hour < 12) greeting = "this Morning";
+  else if (hour < 18) greeting = "this Afternoon";
+  else if (hour < 21) greeting = "this Evening";
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let trendingMovies: any = { results: [] };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,21 +43,20 @@ export default async function Home() {
       redirect(`/search?q=${encodeURIComponent(query)}`);
     }
   }
-
   return (
     <div className="relative min-h-screen pb-20 pt-20" suppressHydrationWarning>
 
       {/* Centered Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-[50vh] w-full text-center px-4 space-y-8">
 
-        {/* Floating Background Icons/Elements (Optional subtle touch to match pstream) */}
+        {/* Floating Background Icons/Elements */}
         <div className="absolute inset-0 z-0 overflow-hidden opacity-20 pointer-events-none select-none">
-          {/* We can add floating icons later if needed, keeping it clean for now as per pstream minimalist style */}
+          {/* Subtle background elements if needed */}
         </div>
 
         <div className="relative z-10 space-y-6 max-w-2xl w-full">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
-            Viva la P-Stream!
+            What would you like to <br className="hidden md:block" /> watch <span className="text-blue-500">{greeting}</span>?
           </h1>
 
           <form action={searchAction} className="relative w-full max-w-lg mx-auto group">
