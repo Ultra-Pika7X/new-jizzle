@@ -54,7 +54,7 @@ export default async function Home() {
           )}
         </div>
 
-        <div className="relative z-30 flex h-full flex-col justify-end px-6 pb-24 md:px-16 lg:w-2/3">
+        <div className="relative z-30 flex h-full flex-col justify-end px-6 pb-32 md:px-16 lg:w-2/3">
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-10 duration-700">
             <h1 className="text-5xl font-black tracking-tight text-white drop-shadow-2xl md:text-7xl lg:text-8xl">
               {featured?.title || featured?.name || "Welcome to CloudAnime"}
@@ -98,7 +98,7 @@ export default async function Home() {
       </div>
 
       {/* Rows */}
-      <div className="relative z-20 -mt-32 space-y-8 pl-4 md:pl-0">
+      <div className="relative z-20 -mt-20 space-y-8 pl-4 md:pl-0">
         <ContinueWatchingRow />
         <MediaRow title="Trending Anime Movies" items={trendingMovies.results} type="movie" />
         <MediaRow title="Trending Anime Series" items={trendingTv.results} type="tv" />
