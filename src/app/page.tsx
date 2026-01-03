@@ -83,13 +83,13 @@ export default async function Home() {
 
             <div className="flex gap-4 pt-4">
               <Link href={`/watch/${featured?.media_type || 'movie'}/${featured?.id}`}>
-                <Button size="lg" className="h-14 px-8 gap-3 text-lg font-bold bg-white text-black hover:bg-gray-200 transition-transform hover:scale-105 rounded-lg">
-                  <Play className="h-6 w-6 fill-current" /> Watch Now
+                <Button size="lg" className="gap-2 text-base font-semibold">
+                  <Play className="h-5 w-5 fill-current" /> Watch Now
                 </Button>
               </Link>
               <Link href={`/${featured?.media_type || 'movie'}/${featured?.id}`}>
-                <Button size="lg" variant="outline" className="h-14 px-8 gap-3 text-lg font-bold border-white/20 bg-black/40 text-white hover:bg-white/10 backdrop-blur-md transition-transform hover:scale-105 rounded-lg">
-                  <Info className="h-6 w-6" /> More Info
+                <Button size="lg" variant="secondary" className="gap-2 text-base font-semibold">
+                  <Info className="h-5 w-5" /> More Info
                 </Button>
               </Link>
             </div>
