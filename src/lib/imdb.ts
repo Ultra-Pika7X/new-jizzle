@@ -137,6 +137,9 @@ export async function getIMDbDetails(id: string) {
             overview: s.description,
             vote_average: s.aggregateRating?.ratingValue || 0,
             release_date: s.datePublished,
+            first_air_date: s.datePublished,
+            number_of_seasons: 0, // Placeholder
+            number_of_episodes: 0, // Placeholder
             genres: s.genre?.map((g: string) => ({ name: g })),
             runtime: s.duration ? parseInt(s.duration.replace("PT", "").replace("M", "")) : 0,
             recommendations: { results: [] },

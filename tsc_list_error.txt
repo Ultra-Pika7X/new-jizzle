@@ -1,0 +1,2 @@
+﻿src/app/list/page.tsx(47,56): error TS2322: Type '"movie" | "tv" | "person"' is not assignable to type '"movie" | "tv" | undefined'.
+  Type '"person"' is not assignable to type '"movie" | "tv" | undefined'.

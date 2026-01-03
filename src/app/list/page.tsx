@@ -44,7 +44,7 @@ export default function WatchlistPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                         {watchlist.map((item) => (
                             <div key={item.id} className="relative group">
-                                <MediaCard item={item} type={item.media_type || 'movie'} />
+                                <MediaCard item={item} type={item.media_type as "movie" | "tv" || 'movie'} />
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();

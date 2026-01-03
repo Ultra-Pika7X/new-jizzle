@@ -40,7 +40,9 @@ export const tmdb = {
         // IMDb IDs are strings (tt12345). If we get a number, we might be in trouble if we don't have a mapping.
         // But the previous implementation seemed to handle mixed types.
         // We'll cast to string and hope it's an IMDb ID or compatible.
-        return getIMDbDetails(id.toString());
+        const details = await getIMDbDetails(id.toString());
+        if (!details) return null;
+        return { ...details, media_type: type };
     },
 
     search: async (query: string, _page = 1) => {
