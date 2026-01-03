@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CloudAnime",
+  title: "Jizzle",
   description: "The ultimate unlimited streaming experience.",
 };
 

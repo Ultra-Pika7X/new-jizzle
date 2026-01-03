@@ -57,7 +57,7 @@ export default async function Home() {
         <div className="relative z-30 flex h-full flex-col justify-end px-6 pb-32 md:px-16 lg:w-2/3">
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-10 duration-700">
             <h1 className="text-5xl font-black tracking-tight text-white drop-shadow-2xl md:text-7xl lg:text-8xl">
-              {featured?.title || featured?.name || "Welcome to CloudAnime"}
+              {featured?.title || featured?.name || "Welcome to Jizzle"}
             </h1>
 
             <div className="flex items-center gap-3 text-sm font-medium text-white/90">
@@ -100,10 +100,10 @@ export default async function Home() {
       {/* Rows */}
       <div className="relative z-20 -mt-20 space-y-8 pl-4 md:pl-0">
         <ContinueWatchingRow />
-        <MediaRow title="Trending Anime Movies" items={trendingMovies.results} type="movie" />
-        <MediaRow title="Trending Anime Series" items={trendingTv.results} type="tv" />
-        <MediaRow title="Top Rated Anime Movies" items={topRatedMovies.results} type="movie" />
-        <MediaRow title="Popular Anime Movies" items={popularMovies.results} type="movie" />
+        <MediaRow title="Trending Movies" items={trendingMovies.results} type="movie" />
+        <MediaRow title="Trending TV Shows" items={trendingTv.results} type="tv" />
+        <MediaRow title="Top Rated Movies" items={topRatedMovies.results} type="movie" />
+        <MediaRow title="Popular Movies" items={popularMovies.results} type="movie" />
       </div>
     </div>
   );
