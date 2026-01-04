@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, User, Cloud } from "lucide-react";
+import { User, Cloud, Library, History } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SettingsMenu } from "./SettingsMenu";
 import { useAuth } from "@/context/AuthContext";
@@ -17,14 +17,19 @@ export function Navbar() {
                 <div className="flex items-center gap-4">
                     <Link href="/" className="flex items-center space-x-2">
                         <span className="text-2xl">🎭</span>
-                        {/* Branding removed as requested */}
                     </Link>
                 </div>
 
-                {/* Right: Icons */}
-                <div className="flex items-center space-x-2">
-                    <SettingsMenu />
+                {/* Right: Icons - Order: Library, Profile/Cloud, Settings, History */}
+                <div className="flex items-center space-x-1">
+                    {/* Library Icon */}
+                    <Link href="/list">
+                        <Button variant="ghost" size="icon" className="text-white/80 hover:bg-white/10 hover:text-white" title="My Library">
+                            <Library className="h-5 w-5" />
+                        </Button>
+                    </Link>
 
+                    {/* Profile / Cloud Sync Icon */}
                     {!loading && (
                         user ? (
                             <Link href="/profile">
@@ -40,14 +45,25 @@ export function Navbar() {
                             </Link>
                         ) : (
                             <Link href="/login">
-                                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" title="Cloud Sync / Login">
+                                <Button variant="ghost" size="icon" className="text-white/80 hover:bg-white/10 hover:text-white" title="Cloud Sync / Login">
                                     <Cloud className="h-5 w-5" />
                                 </Button>
                             </Link>
                         )
                     )}
+
+                    {/* Settings Menu */}
+                    <SettingsMenu />
+
+                    {/* History Icon */}
+                    <Link href="/history">
+                        <Button variant="ghost" size="icon" className="text-white/80 hover:bg-white/10 hover:text-white" title="Watch History">
+                            <History className="h-5 w-5" />
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </header>
     );
 }
+
