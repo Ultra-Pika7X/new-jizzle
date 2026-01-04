@@ -2,18 +2,12 @@
 
 import { useWatchHistory } from "@/hooks/useWatchHistory";
 import { MediaRow } from "@/components/common/MediaRow";
-import { useEffect, useState } from "react";
 
 export function ContinueWatchingRow() {
-    const { history } = useWatchHistory();
-    const [mounted, setMounted] = useState(false);
+    const { history, isLoaded } = useWatchHistory();
 
-    useEffect(() => {
-        // eslint-disable-next-line
-        setMounted(true);
-    }, []);
-
-    if (!mounted || history.length === 0) return null;
+    // Don't render until data is loaded and there's history
+    if (!isLoaded || history.length === 0) return null;
 
     return (
         <MediaRow
@@ -22,3 +16,4 @@ export function ContinueWatchingRow() {
         />
     );
 }
+
