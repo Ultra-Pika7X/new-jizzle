@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 
 // TODO: USER MUST REPLACE THESE WITH THEIR ACTUAL FIREBASE CONFIG KEYS
 const firebaseConfig = {
-    apiKey: "AIzaSyCuCDTyqSvsVUI1-6-1GMFp8HvEkOyry0I",
-    authDomain: "jizzle-bedb7.firebaseapp.com",
-    projectId: "jizzle-bedb7",
-    storageBucket: "jizzle-bedb7.firebasestorage.app",
-    messagingSenderId: "887639030100",
-    appId: "1:887639030100:web:5819cbb07be963cfc4b0c1"
+    apiKey: "AIzaSyDoMHPWwGuz9Gre6SYEPglbE3eBUF97Ryw",
+    authDomain: "new-jizzle.firebaseapp.com",
+    projectId: "new-jizzle",
+    storageBucket: "new-jizzle.firebasestorage.app",
+    messagingSenderId: "874547857794",
+    appId: "1:874547857794:web:d8c7f80a15a4134465e79b"
 };
 
 // Initialize Firebase
